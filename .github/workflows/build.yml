@@ -2,7 +2,9 @@ name: Build KMonad
 
 on:
   push:
-    branches: ['main']
+    branches: ['build']
+  schedule:
+      - cron: '0 12 1 */6 *'
   workflow_dispatch:
 
 jobs:
@@ -15,29 +17,26 @@ jobs:
       with:
         repository: kmonad/kmonad
 
-    - name: Set up PowerShell
+    - name: Install Scoop
       shell: pwsh
       run: |
         Set-ExecutionPolicy RemoteSigned -scope CurrentUser
         iex "& {$(irm get.scoop.sh)} -RunAsAdmin"
         scoop install stack
 
-    - name: Clone KMonad repository
-      run: |
-        cd $env:USERPROFILE\Downloads
-        git clone https://github.com/kmonad/kmonad.git
-        cd kmonad
-
     - name: Compile KMonad
       run: |
         stack build
 
-    - name: Install and Run KMonad
+    - name: Install KMonad
       run: |
         stack install
+
+    - name: Set APPDATA
+      run: echo ("APPDATA_DIR=" + $env:APPDATA) >> $env:GITHUB_ENV
 
     - name: Upload KMonad artifact
       uses: actions/upload-artifact@v3
       with:
         name: kmonad-executable
-        path: $env:APPDATA\local\bin\
+        path: ${{ env.APPDATA_DIR }}\local\bin\
