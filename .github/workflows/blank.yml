@@ -1,0 +1,38 @@
+name: Build KMonad
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up PowerShell
+      shell: pwsh
+      run: |
+        Set-ExecutionPolicy RemoteSigned -scope CurrentUser
+        iwr -useb get.scoop.sh | iex
+        scoop install stack
+
+    - name: Clone KMonad repository
+      run: |
+        cd $env:USERPROFILE\Downloads
+        git clone https://github.com/kmonad/kmonad.git
+        cd kmonad
+
+    - name: Compile KMonad
+      run: |
+        stack build
+
+    - name: Install and Run KMonad
+      run: |
+        stack install
+
+    - name: Upload KMonad artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: kmonad-executable
+        path: $env:APPDATA\local\bin\
