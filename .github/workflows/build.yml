@@ -19,7 +19,7 @@ jobs:
       shell: pwsh
       run: |
         Set-ExecutionPolicy RemoteSigned -scope CurrentUser
-        iwr -useb get.scoop.sh | iex
+        iex "& {$(irm get.scoop.sh)} -RunAsAdmin"
         scoop install stack
 
     - name: Clone KMonad repository
