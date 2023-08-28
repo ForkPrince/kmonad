@@ -1,5 +1,8 @@
 name: Build KMonad
+
 on:
+  push:
+    branches: ['main']
   workflow_dispatch:
 
 jobs:
