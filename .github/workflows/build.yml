@@ -12,6 +12,8 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
+      with:
+        repository: kmonad/kmonad
 
     - name: Set up PowerShell
       shell: pwsh
