@@ -46,9 +46,9 @@ jobs:
         name: kmonad-executable
         path: ${{ env.APPDATA_DIR }}\local\bin\
 
-    - name: Upload KMonad artifact
+    - name: Upload KMonad release
       uses: softprops/action-gh-release@v2
       with:
         tag_name: ${{ inputs.version }}
         make_latest: true
-        files: ${{ env.APPDATA_DIR }}\local\bin\
+        files: ${{ env.APPDATA_DIR }}\local\bin\kmonad.exe
