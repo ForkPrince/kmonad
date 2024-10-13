@@ -1,11 +1,15 @@
 name: Build KMonad
 
 on:
-  push:
-    branches: ['build']
-  schedule:
-      - cron: '0 12 1 */6 *'
   workflow_dispatch:
+    inputs:
+      version:
+        description: Version tag to build.
+        required: true
+
+permissions:
+  packages: write
+  contents: write
 
 jobs:
   build:
@@ -13,9 +17,10 @@ jobs:
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
       with:
         repository: kmonad/kmonad
+        ref: ${{ inputs.version }}
 
     - name: Install Scoop
       shell: pwsh
@@ -40,3 +45,10 @@ jobs:
       with:
         name: kmonad-executable
         path: ${{ env.APPDATA_DIR }}\local\bin\
+
+    - name: Upload KMonad artifact
+      uses: softprops/action-gh-release@v2
+      with:
+        tag_name: ${{ inputs.version }}
+        make_latest: true
+        files: ${{ env.APPDATA_DIR }}\local\bin\
