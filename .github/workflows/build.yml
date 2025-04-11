@@ -41,7 +41,7 @@ jobs:
       run: echo ("APPDATA_DIR=" + $env:APPDATA) >> $env:GITHUB_ENV
 
     - name: Upload KMonad artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: kmonad-executable
         path: ${{ env.APPDATA_DIR }}\local\bin\
