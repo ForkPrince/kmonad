@@ -1,4 +1,4 @@
-name: Build KMonad
+name: (Manual) Build KMonad
 
 on:
   workflow_dispatch:
