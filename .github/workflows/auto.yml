@@ -38,7 +38,11 @@ jobs:
           NEW_TAGS=()
           for tag in $UPSTREAM; do
             if ! echo "$OURS" | grep -qx "$tag"; then
-              NEW_TAGS+=("$tag")
+              # Strip leading 'v' and check version is >= 0.4.0
+              VERSION=$(echo "$tag" | sed 's/^v//')
+              if printf '%s\n' "0.3.0" "$VERSION" | sort -V -C; then
+                NEW_TAGS+=("$tag")
+              fi
             fi
           done
           if [ ${#NEW_TAGS[@]} -eq 0 ]; then
