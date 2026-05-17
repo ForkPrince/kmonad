@@ -40,7 +40,7 @@ jobs:
             if ! echo "$OURS" | grep -qx "$tag"; then
               # Strip leading 'v' and check version is >= 0.4.0
               VERSION=$(echo "$tag" | sed 's/^v//')
-              if printf '%s\n' "0.3.0" "$VERSION" | sort -V -C; then
+              if printf '%s\n' "0.4.0" "$VERSION" | sort -V -C; then
                 NEW_TAGS+=("$tag")
               fi
             fi
